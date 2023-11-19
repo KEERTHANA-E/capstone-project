@@ -1,0 +1,18 @@
+<!-- <img *ngIf="showImg==true" class="img" src="https://editor.analyticsvidhya.com/uploads/90549chatbot-4071274_1920.jpg" (click)="activated()"> -->
+<button *ngIf="showImg==true" class="btn button1" (click)="activated()"><i class="fa-solid fa-circle-question"></i> Help</button>
+<div *ngIf="show==true" class="chatbot-container" >
+    <h3 (click)="deactivated()">chatbot</h3>
+    <div class="chatbot-history">
+        <!-- Show chat history stored in history variable -->
+        <div *ngFor="let message of history.split('\n')">
+            <div
+                [ngClass]="{ 'user-question': message.indexOf('You:') === 0, 'chatbot-answer': message.indexOf('Chatbot:') === 0 }">
+                {{ message.substr(message.indexOf(':') + 2) }}
+            </div>
+        </div>
+    </div>
+    <div class="chatbot-input">
+        <input type="text" placeholder="Ask me something" #input>
+        <button (click)="handleSubmit()">Submit</button>
+    </div>
+</div>

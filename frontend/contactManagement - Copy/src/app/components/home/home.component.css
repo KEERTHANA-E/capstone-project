@@ -1,0 +1,89 @@
+
+.btn {
+    background-color: #4A4E69;
+    color: white;
+}
+.tab-pane p {
+  font-size: 20px;
+  line-height: 1.5;
+}
+body {
+    background-color: #9ea4c5;
+    height: 100%;
+}
+.app-chatbox {
+  position: fixed !important;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+.file-pdf:hover {
+  cursor: pointer;
+  content: url(../../../assets/img/icons8-pdf.gif);
+}
+.file-img:hover {
+  cursor: pointer;
+  content: url(../../../assets/img/icons8-image.gif);
+}
+.file-doc:hover {
+  cursor: pointer;
+  content: url(../../../assets/img/icons8-document.gif);
+}
+.file-zip:hover {
+  cursor: pointer;
+  content: url(../../../assets/img/icons8-archive-folder.gif);
+}
+.nav-tabs .nav-item.show .nav-link,
+.nav-tabs .nav-link.active{
+  color: #4A4E69;
+  background-color: rgb(212, 212, 212);
+  border-bottom: 2px solid #4A4E69;
+}
+
+
+.unstyling {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.card-text.phone-number {
+  margin-top: 0.5rem;
+}
+
+.card-text.phone-number:before {
+  content: '\f095';
+  margin-right: 0.5rem;
+  font-family: 'Font Awesome\ 5 Free';
+  font-weight: 900;
+}
+
+.card-text.phone-type {
+  color: #4A4E69;
+  font-size: 0.8rem;
+  margin-left: 1rem;
+}
+
+.badge {
+  background-color: #4A4E69;
+  padding: 0.5rem;
+  margin-right: 0.5rem;
+  font-size: 0.8rem;
+}
+.file-man-box {
+  /* padding: 5px; */
+  border: 1px solid #e3eaef;
+  border-radius: 5px;
+  /* position: relative; */
+  /* margin-bottom: 20px; */
+}
+
+
+.file-man-box .file-img-box {
+  /* line-height: 120px; */
+  text-align: center
+}
+
+.file-man-box .file-img-box img {
+  height: 45px;
+}

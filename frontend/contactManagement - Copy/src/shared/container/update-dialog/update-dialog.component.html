@@ -1,0 +1,77 @@
+<div class="container mt-3" [formGroup]="updateForm">
+  <h1 class="text-center">Update contact</h1>
+  <div class="row">
+    <mat-form-field class="col-lg-6">
+      <mat-label>Name</mat-label>
+      <input matInput formControlName="name" [readonly]="userService.userInfo.isAdmin == false" />
+    </mat-form-field>
+    <mat-form-field class="col-lg-6">
+      <mat-label>Email</mat-label>
+      <input matInput formControlName="email" [readonly]="userService.userInfo.isAdmin == false" />
+    </mat-form-field>
+  </div>
+  <div class="row">
+    <div formArrayName="phonenumber">
+      <div *ngFor="let phone of updateForm.get('phonenumber')['controls']; let i = index;">
+        <div [formGroupName]="i">
+          <mat-form-field class="col-lg-5 me-3">
+            <mat-label>Phone Number</mat-label>
+            <input matInput formControlName="number" />
+          </mat-form-field>
+          <mat-form-field class="col-lg-5">
+            <mat-label>Type</mat-label>
+            <mat-select formControlName="type">
+              <mat-option value="mobile">Mobile</mat-option>
+              <mat-option value="home">Home</mat-option>
+              <mat-option value="work">Work</mat-option>
+              <mat-option value="other">other</mat-option>
+            </mat-select>
+          </mat-form-field>
+          <button class="btn btn-danger ms-2" (click)="deletePhoneNumber(i)">
+            <mat-icon>delete_forever</mat-icon>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="text-center mb-3">
+    <button mat-mini-fab class="btn btn-primary" (click)="addPhoneNumber()">
+      <mat-icon>add</mat-icon>
+    </button>
+  </div>
+  <div class="row">
+    <mat-form-field class="col">
+      <mat-label>Company</mat-label>
+      <input matInput formControlName="company" readonly />
+    </mat-form-field>
+    <mat-form-field class="col">
+      <mat-label>Role</mat-label>
+      <input matInput formControlName="role" [readonly]="userService.userInfo.isAdmin == false" />
+    </mat-form-field>
+  </div>
+  <div class="row">
+    <mat-form-field class="col" >
+      <mat-label>Gender</mat-label>
+      <mat-select formControlName="gender">
+      <mat-option value="female">Female</mat-option>
+      <mat-option value="male">Male</mat-option>
+    </mat-select>
+    </mat-form-field>
+    <mat-form-field class="col">
+      <mat-label>Notes</mat-label>
+      <textarea matInput cdkTextareaAutosize #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="1"
+        cdkAutosizeMaxRows="5" formControlName="notes" [readonly]="((userService.userInfo.isAdmin == true) && (userService.userInfo._id !== data?._id))"></textarea>
+    </mat-form-field>
+  </div>
+  <div class="attachment-container" >
+    <label class="attachment-label">Attachments : </label>
+    <ul class="attachment-list" *ngFor="let file of data.attachments">
+      <li><a>{{file.fileName}}</a></li>
+    </ul>
+    <input type="file" class="form-control" (change)="selectFile($event)" />
+  </div>
+  <div class="d-flex justify-content-center mb-3">
+    <button class="btn btn-primary me-3" type="submit" (click)="updateContact()">save changes</button>
+    <button class="btn btn-danger" type="submit" (click)="closeDialog()">cancel</button>
+  </div>
+</div>

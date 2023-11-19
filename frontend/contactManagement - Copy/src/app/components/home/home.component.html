@@ -1,0 +1,152 @@
+<body>
+  <app-navbar></app-navbar>
+  <section style="background-color:#4A4E69;">
+    <div class="container pt-5 h-100">
+      <div class="row d-flex justify-content-center align-items-center h-100">
+        <div class="col col-xl-10">
+          <div class="card mb-5" style="border-radius: 15px;">
+            <div class="card-body d-flex flex-wrap justify-content-between">
+              <div class="d-flex flex-column">
+                <p class="display-5 text-capitalize"><strong>{{this.userService.userInfo?.name}}</strong></p>
+                <p class="large">{{this.userService.userInfo?.role}}<span class="mx-2">|</span>
+                  <strong>{{this.userService.userInfo?.company}}</strong>
+                </p>
+                <p class="large"><i class="fa-solid fa-envelope" style="color: #4A4E69;"></i>
+                  {{this.userService.userInfo?.email}}</p>
+                <p class="text-uppercase large" (click)="openDialogForUpdate(this.userService.userInfo)"><i
+                    class="fas fa-cog me-2"></i> <span class="small">settings</span></p>
+              </div>
+              <img src="../../../assets/img/female.svg">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <div class="mt-3 d-flex flex-wrap justify-content-around">
+    <div [formGroup]="filterForm">
+      <mat-form-field class="example-form-field me-2">
+        <mat-label>Search a User</mat-label>
+        <input matInput type="text" formControlName="query">
+      </mat-form-field>
+      <mat-form-field class="example-form-field me-2">
+        <mat-label>Filter</mat-label>
+        <mat-select formControlName="type">
+          <mat-option value="name">Name</mat-option>
+          <mat-option value="email">Email</mat-option>
+          <mat-option value="phonenumber">PhoneNumber</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Categories</mat-label>
+        <mat-select formControlName="role">
+          <mat-option *ngFor="let role of roles" value="{{role}}">{{role}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <div *ngIf="userService.userInfo?.isAdmin == true">
+      <mat-form-field>
+        <mat-label>Add employees</mat-label>
+        <mat-select>
+          <mat-option (click)="openDialogForAdd()">Create user</mat-option>
+          <mat-option (click)="fileImportInput.click()">Upload File</mat-option>
+          <mat-option (click)="exportexcel()">Download File</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <input type="file" hidden #fileImportInput name="File Upload" id="csvFileUpload"
+        (change)="fileChangeListener($event)" accept=".csv" data-testid="importCSV" />
+
+    </div>
+  </div>
+  <div class="m-4 d-flex flex-wrap flex-row">
+    <div *ngFor="let a of userList; let i=index" [ngClass]="{'active': activeUserIndex===i}">
+      <section class="m-3" style="width: 23rem;">
+
+        <div class="card">
+          <div class="card-body">
+            <div class="d-flex">
+              <div class="d-flex flex-column">
+                <p class="card-title text-capitalize" style="font-size:x-large;">
+                  <strong>{{a.name}}</strong>
+                </p>
+                <p class="card-text text-capitalize"><i>{{a.role}}</i></p>
+                <p class="card-text" style="text-overflow: ellipsis; overflow: hidden; white-space: nowrap;"><i
+                    class="fa-solid fa-envelope" style="color: #4A4E69;"></i> {{a.email}}
+                </p>
+                <p class="" *ngIf="this.userService.userInfo?.isAdmin==true">
+                  <i class="fa-solid fa-pen-to-square fa-lg m-2" (click)="openDialogForUpdate(a)"></i>
+                  <span class="mx-2">Edit | </span>
+                  <i class="fa-solid fa-trash-can fa-lg" (click)="openDialogForDelete(a)"> </i>
+                  <span class="mx-2">Delete</span>
+                </p>
+              </div>
+              <img *ngIf="a.gender=='female'" style="width: 150px;" src="../../../assets/img/female.svg">
+              <img *ngIf="a.gender!='female'" style="width: 150px;" src="../../../assets/img/male.svg">
+            </div>
+          </div>
+          <ul class="nav nav-tabs nav-fill" id="ex1" role="tablist">
+            <li class="nav-item ms-0" role="presentation">
+              <a class="nav-link " id="ex1-tab-1" data-bs-toggle="tab" href="#ex1-tabs-1-{{i}}" role="tab"
+                aria-controls="ex1-tabs-1" aria-selected="true"><i class="fa-solid fa-address-card fa-2xl"></i></a>
+            </li>
+            <li class="nav-item" role="presentation">
+              <a class="nav-link" id="ex1-tab-2" data-bs-toggle="tab" href="#ex1-tabs-2-{{i}}" role="tab"
+                aria-controls="ex1-tabs-2" aria-selected="true" (click)="activeUserIndex=i"><i
+                  class="fa-regular fa-clipboard fa-2xl"></i></a>
+            </li>
+            <li class="nav-item" role="presentation">
+              <a class="nav-link" id="ex1-tab-3" data-bs-toggle="tab" href="#ex1-tabs-3-{{i}}" role="tab"
+                aria-controls="ex1-tabs-3" aria-selected="true" (click)="activeUserIndex=i"><i
+                  class="fa-solid fa-paperclip fa-2xl"></i></a>
+            </li>
+          </ul>
+          <!-- style="height: 100px; overflow-y: auto;" -->
+          <div class="card-body">
+            <div class="tab-content" id="ex1-content">
+              <div class="tab-pane fade" id="ex1-tabs-1-{{i}}" role="tabpanel" aria-labelledby="ex1-tabs-1">
+                <ul class="unstyling" *ngFor="let x of a.phonenumber">
+                  <li class="card-text phone-number"><span class="badge"> {{x.type}}</span> <i>{{x.number}}</i> <span
+                      class="phone-type"></span></li>
+                </ul>
+              </div>
+              <div class="tab-pane fade" id="ex1-tabs-2-{{i}}" role="tabpanel" aria-labelledby="ex1-tabs-2">
+                <div>
+                  <p>{{a.notes}}</p>
+                </div>
+              </div>
+              <div class="tab-pane fade" id="ex1-tabs-3-{{i}}" role="tabpanel" aria-labelledby="ex1-tabs-3">
+                <div class="d-flex flex-row">
+                  <div class="file-img-box me-5" *ngFor="let file of a.attachments">
+                    <img class="file-pdf" *ngIf="file.fileName.endsWith('.pdf')" matTooltip="{{file.fileName}}"
+                      matTooltipPosition="right" src="../../../assets/img/icons8-pdf.png" alt="icon"
+                      (click)="openFile(file.fileUrl)">
+
+                    <img class="file-doc" *ngIf="file.fileName.endsWith('.docx')" matTooltip="{{file.fileName}}"
+                      matTooltipPosition="right" src="../../../assets/img/icons8-document.png" alt="icon"
+                      (click)="openFile(file.fileUrl)">
+
+                    <img class="file-img" *ngIf="file.fileName.endsWith('.jpg') || file.fileName.endsWith('.png')"
+                      matTooltip="{{file.fileName}}" matTooltipPosition="right" src="../../../assets/img/icons8-img.png"
+                      alt="icon" (click)="openFile(file.fileUrl)">
+
+                    <img class="file-zip" *ngIf="file.fileName.endsWith('.zip')" matTooltip="{{file.fileName}}"
+                      matTooltipPosition="right" src="../../../assets/img/icons8-archive-folder.png" alt="icon"
+                      (click)="openFile(file.fileUrl)">
+                  </div>
+                  <!-- <div class="file-man-title">
+                    <h5 class="mb-0" style="text-overflow: ellipsis; white-space: no-wrap; overflow: hidden;">{{file.fileName}}</h5>
+                  </div> -->
+                </div>
+              </div>
+
+              <p *ngIf="a.attachments.length==0" class="text-danger text-center" style="font-weight: bold;"> No
+                attachments </p>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+  <app-chatbox class="app-chatbox"></app-chatbox>
+  <app-footer></app-footer>
+</body>
